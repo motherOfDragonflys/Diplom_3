@@ -1,6 +1,7 @@
 package tests;
 
 import base.BaseTest;
+import io.qameta.allure.Allure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -49,6 +50,9 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
 
     @Test
     public void sectionTransitionTest() {
+
+        Allure.getLifecycle().updateTestCase(t -> t.setName(name));
+
         ConstructorPage page = new ConstructorPage(driver);
 
         // Открыли раздел с конструктором
