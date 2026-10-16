@@ -48,7 +48,9 @@ public class BrowserFactory {
                 "--start-maximized",
                 "--no-first-run",
                 "--no-default-browser-check",
-                "--disable-infobars"
+                "--disable-infobars",
+                "--headless",
+                "--window-size=1920,1080"
         );
         return new ChromeDriver(options);
     }
@@ -60,7 +62,9 @@ public class BrowserFactory {
                 "--start-maximized",
                 "--no-first-run",
                 "--no-default-browser-check",
-                "--disable-infobars"
+                "--disable-infobars",
+                "--headless",
+                "--window-size=1920,1080"
         );
         System.setProperty("webdriver.chrome.driver", YANDEX_DRIVER_PATH);
         return new ChromeDriver(options);

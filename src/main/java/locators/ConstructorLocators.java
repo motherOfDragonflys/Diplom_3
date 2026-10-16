@@ -38,4 +38,15 @@ public class ConstructorLocators {
     public static final By SAUCES_TAB_ACTIVE =
             By.xpath(
                     "//div[contains(@class,'tab') and contains(@class,'tab_type_current')][.//span[text()='Соусы']]");
+
+    // Булка как маркер загрузки всех элементов конструктора
+    public static final By FIRST_BUN_CARD =
+            By.xpath(".//p[contains(text(),'Краторная булка')]");
+
+//__Кнопка "Оформить заказ" в конструкторе
+
+    public static final By ORDER_BUTTON =
+            By.xpath(".//button[normalize-space()='Оформить заказ']");
+
+
 }

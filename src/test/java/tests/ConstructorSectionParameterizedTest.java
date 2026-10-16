@@ -2,19 +2,20 @@ package tests;
 
 import base.BaseTest;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.By;
 import pageobjects.ConstructorPage;
-
 import static locators.ConstructorLocators.*;
 import static org.junit.Assert.assertTrue;
 
+@Feature("Раздел «Конструктор»")
 @RunWith(Parameterized.class)
 public class ConstructorSectionParameterizedTest extends BaseTest {
 
-    //Имя, вкладка подготовки, её маркер, проверяемая вкладка, её маркер
+    //Название вкладки, вкладка старта, её маркер активности, проверяемая вкладка, её маркер активности
     private final String name;
     private final By tabToPrepare;
     private final By prepareTabActive;
@@ -30,19 +31,19 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
         this.tabToAssert = tabToAssert;
     }
 
-    @Parameterized.Parameters(name = "Открытие вкладки {0}")
+    @Parameterized.Parameters
     public static Object[][] sections() {
         return new Object[][]{
                 // Соусы: стартуем с Булок, кликаем Соусы, ждём SAUCES_TAB_ACTIVE
-                {"Соусы",
+                {"Отображение соусов для вкладки Соусы",
                         BUNS_TAB,     BUNS_TAB_ACTIVE,
                         SAUCES_TAB,   SAUCES_TAB_ACTIVE},
                 // Начинки: стартуем с Булок, кликаем Начинки, ждём FILLINGS_TAB_ACTIVE
-                {"Начинки",
+                {"Отображение начинок для вкладки Начинки",
                         BUNS_TAB,     BUNS_TAB_ACTIVE,
                         FILLINGS_TAB, FILLINGS_TAB_ACTIVE},
                 // Булки: стартуем с Соусов, кликаем Булки, ждём BUNS_TAB_ACTIVE
-                {"Булки",
+                {"Отображение булок для вкладки Булки",
                         SAUCES_TAB,   SAUCES_TAB_ACTIVE,
                         BUNS_TAB,     BUNS_TAB_ACTIVE},
         };
@@ -62,7 +63,7 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
         // Переходим к проверяемому разделу
         page.clickTab(tabToClick, tabToAssert);
 
-        assertTrue("Активной является вкладка «" + name + "»",
+        assertTrue("Активной является вкладка \"" + name + "\"",
                 page.isTabActive(tabToAssert));
     }
 }
