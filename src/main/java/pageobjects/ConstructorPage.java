@@ -1,7 +1,6 @@
 package pageobjects;
 
 import io.qameta.allure.Step;
-import locators.HeaderLocators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -9,9 +8,49 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Config;
 import java.time.Duration;
-import static locators.ConstructorLocators.*;
 
 public class ConstructorPage extends HeaderPage {
+
+//__ЛОКАТОРЫ____________________________________________________________________________________________________________
+
+    //__Вкладки конструктора:
+    // Вкладка Булки
+    public static final By BUNS_TAB =
+            By.xpath("//div[contains(@class,'tab')][.//span[text()='Булки']]");
+
+    // Вкладка Начинки
+    public static final By FILLINGS_TAB =
+            By.xpath("//div[contains(@class,'tab')][.//span[text()='Начинки']]");
+
+    // Вкладка Соусы
+    public static final By SAUCES_TAB =
+            By.xpath("//div[contains(@class,'tab')][.//span[text()='Соусы']]");
+
+    //__Локаторы активной вкладки конструктора:
+    // Активная вкладка Булки
+    public static final By BUNS_TAB_ACTIVE =
+            By.xpath(
+            "//div[contains(@class,'tab') and contains(@class,'tab_type_current')][.//span[text()='Булки']]");
+
+    // Активная вкладка Начинки
+    public static final By FILLINGS_TAB_ACTIVE =
+            By.xpath(
+            "//div[contains(@class,'tab') and contains(@class,'tab_type_current')][.//span[text()='Начинки']]");
+
+    // Активная вкладка Соусы
+    public static final By SAUCES_TAB_ACTIVE =
+            By.xpath(
+            "//div[contains(@class,'tab') and contains(@class,'tab_type_current')][.//span[text()='Соусы']]");
+
+    // Булка: как маркер загрузки элементов конструктора
+    public static final By FIRST_BUN_CARD =
+            By.xpath(".//p[contains(text(),'Краторная булка')]");
+
+    //__Кнопка "Оформить заказ" в конструкторе
+    public static final By ORDER_BUTTON =
+            By.xpath(".//button[normalize-space()='Оформить заказ']");
+
+//__МЕТОДЫ______________________________________________________________________________________________________________
 
     public ConstructorPage(WebDriver driver) {
         super(driver);
@@ -32,9 +71,9 @@ public class ConstructorPage extends HeaderPage {
     public ConstructorPage openConstructor () {
         driver.get(Config.baseUrl());
         // На зеркале стартовый экран, а не конструктор: переходим по ссылке
-        waitForClickable(HeaderLocators.CONSTRUCTOR_LINK).click();
-        // Признак того, что конструктор отрисован: есть любая активная вкладка
-        waitForVisible(ACTIVE_TAB);
+        waitForClickable(CONSTRUCTOR_LINK).click();
+        // Признак того, что конструктор отрисован: есть любая булка
+        waitForVisible(FIRST_BUN_CARD);
         return this;
     }
 

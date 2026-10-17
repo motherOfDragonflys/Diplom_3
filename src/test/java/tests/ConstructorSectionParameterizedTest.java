@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.By;
 import pageobjects.ConstructorPage;
-import static locators.ConstructorLocators.*;
+import static pageobjects.ConstructorPage.*;
 import static org.junit.Assert.assertTrue;
 
 @Feature("Раздел «Конструктор»")

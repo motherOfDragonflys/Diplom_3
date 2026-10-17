@@ -1,15 +1,44 @@
 package pageobjects;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Config;
 import java.time.Duration;
-import static locators.HeaderLocators.HEADER_ACCOUNT_LINK;
-import static locators.LoginPageLocators.*;
 
 public class LoginPage extends HeaderPage {
+
+//__ЛОКАТОРЫ____________________________________________________________________________________________________________
+
+    //__Заголовок формы "Вход": маркер, что открыта именно эта страница
+    public static final By LOGIN_HEADER =
+            By.xpath(".//h3[text()='Вход']");
+
+    //__Форма входа:
+    // Поле ввода email
+    public static final By EMAIL_FIELD =
+            By.xpath(".//input[@type='email']");
+
+    // Поле ввода пароля
+    public static final By PASSWORD_FIELD =
+            By.xpath(".//input[@type='password']");
+
+    // Кнопка "Войти"
+    public static final By LOGIN_BUTTON =
+            By.xpath(".//button[text()='Войти']");
+
+    //__Под формой:
+    // Ссылка "Зарегистрироваться": ведет на регистрацию
+    public static final By REGISTER_LINK =
+            By.xpath(".//a[@href='/register']");
+
+    // Ссылка "Восстановить пароль": ведет на страницу восстановления пароля
+    public static final By FORGOT_PASSWORD_LINK =
+            By.xpath(".//a[@href='/forgot-password']");
+
+//__МЕТОДЫ______________________________________________________________________________________________________________
 
     public LoginPage(WebDriver driver) {
         super(driver);
