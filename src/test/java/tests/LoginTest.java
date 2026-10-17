@@ -5,60 +5,62 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import org.junit.Assert;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import model.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
 import pageobjects.ConstructorPage;
 import pageobjects.HeaderPage;
 import pageobjects.LoginPage;
-
+import utils.Config;
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.assertEquals;
-import static utils.Config.baseUrl;
 import static utils.TestData.*;
 
 /**
  * Логика тестов:
- * в Before создается пользователь 1(!) раз на все тесты и разлогинивается,
- * в каждом тесте происходит полный путь до формы Вход и логин пользователя,
- * изоляция тестов: каждый тест открывает свою стартовую страницу сам,
- * состояние сессии между тестами не очищается
+ * перед каждым тестом через API создается пользователь и после теста удаляется,
+ * в каждом тесте происходит полный путь до входа пользователя,
+ * изоляция тестов: у каждого теста свой пользователь и своя стартовая страница.
+ * В Before и After не уношу логику в отдельный класс, т.к. пользователь через апи создается только в данном наборе тестов
  */
 @Feature("Вход пользователя")
 public class LoginTest extends BaseTest {
 
-    private static String email;
-    private static String password;
-    private static boolean userCreated = false;
+    private static User user;
+    private static String accessToken;
 
     @Before
-    @Step("Создаем тестового пользователя и выходим из аккаунта")
-    public void registerAndLogoutUser() {
+    @Step("Создаем тестового пользователя через API")
+    public void createUser() {
+        user = new User(
+                uniqueEmail(),
+                validPassword(),
+                userName());
 
-        if (userCreated) {
-            return; // учетка уже создана
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(user)
+                .when()
+                .post(Config.baseUrl() + "/api/auth/register");
+        assertEquals("Пользователь не создан через API, код: " + response.statusCode(),
+                SC_OK, response.statusCode());
+        //Если пользователь создан, сохраняем токен
+        accessToken = response.path("accessToken");
+    }
+
+    @After
+    @Step("Удаляем тестового пользователя через API")
+    public void deleteUser (){
+        if (accessToken != null) {
+            RestAssured.given()
+                    .header("Authorization", accessToken)
+                    .when()
+                    .delete(Config.baseUrl() + "/api/auth/user");
         }
-
-        email = uniqueEmail();
-        password = validPassword();
-
-        new LoginPage(driver)
-                .openLoginPage()
-                .clickRegisterLink()
-                .waitForRegisterForm()
-                .setName(userName())
-                .setEmail(email)
-                .setPassword(password)
-                .clickRegisterButton()
-                .waitForUserInHeader()
-                .logout();  // вернулись в незалогиненное состояние
-        userCreated = true;
-
-        driver.get(baseUrl());
-        ((JavascriptExecutor) driver).executeScript("window.localStorage.clear();");
-        driver.manage().deleteAllCookies();
-        driver.get(baseUrl());
-
     }
 
     @Test
@@ -70,7 +72,7 @@ public class LoginTest extends BaseTest {
                 .openConstructor()
                 .clickOrderButton()
                 .waitForLoginForm()
-                .loginAs(email, password);
+                .loginAs(user.getEmail(), user.getPassword());
 
         assertEquals(
                 "После входа по кнопке \"Оформить заказ\", в шапке не имя пользователя",
@@ -85,7 +87,7 @@ public class LoginTest extends BaseTest {
         new HeaderPage(driver)
                 .clickAccountLink()
                 .waitForLoginForm()
-                .loginAs(email, password);
+                .loginAs(user.getEmail(), user.getPassword());
 
         assertEquals(
                 "После входа по кнопке \"Личный кабинет\", в шапке не имя пользователя",
@@ -103,7 +105,7 @@ public class LoginTest extends BaseTest {
                 .waitForRegisterForm()
                 .clickLoginLink()
                 .waitForLoginForm()
-                .loginAs(email, password);
+                .loginAs(user.getEmail(), user.getPassword());
 
         assertEquals(
                 "После входа по кнопке \"Войти\" под формой регистрации, в шапке не имя пользователя",
@@ -121,7 +123,7 @@ public class LoginTest extends BaseTest {
                 .waitForForgotPasswordForm()
                 .clickLoginLink()
                 .waitForLoginForm()
-                .loginAs(email, password);
+                .loginAs(user.getEmail(), user.getPassword());
 
         assertEquals(
                 "После входа по кнопке \"Войти\" под формой восстановления пароля, в шапке не имя пользователя",
