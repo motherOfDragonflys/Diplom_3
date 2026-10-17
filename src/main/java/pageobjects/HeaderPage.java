@@ -17,12 +17,6 @@ public class HeaderPage extends BasePage {
         return new LoginPage(driver);
     }
 
-    @Step("Ожидаем ссылку \"Личный кабинет\" в шапке")
-    public HeaderPage waitForLoggedOut() {
-        waitForVisible(HEADER_ACCOUNT_LINK);
-        return this;
-    }
-
     @Step("Ожидаем имя пользователя в шапке вместо ссылки \"Личный кабинет\"")
     public HeaderPage waitForUserInHeader() {
          waitForVisible(HEADER_USER_NAME);
