@@ -2,7 +2,7 @@ package locators;
 
 import org.openqa.selenium.By;
 
-public class ProfilePageLocators {
+public final class ProfilePageLocators {
     private ProfilePageLocators() {}
 
 //__Описание раздела: маркер открытия страницы профиля

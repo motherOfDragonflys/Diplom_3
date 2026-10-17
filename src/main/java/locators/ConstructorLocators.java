@@ -2,7 +2,7 @@ package locators;
 
 import org.openqa.selenium.By;
 
-public class ConstructorLocators {
+public final class ConstructorLocators {
     private ConstructorLocators() {}
 
 //__ВКЛАДКИ КОНСТРУКТОРА

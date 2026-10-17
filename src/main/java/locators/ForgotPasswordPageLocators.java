@@ -2,7 +2,7 @@ package locators;
 
 import org.openqa.selenium.By;
 
-public class ForgotPasswordPageLocators {
+public final class ForgotPasswordPageLocators {
     private ForgotPasswordPageLocators() {}
 
 //__Заголовок "Восстановление пароля": маркер открытия формы восстановления
