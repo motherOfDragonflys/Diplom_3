@@ -2,6 +2,7 @@ package tests;
 
 import base.BaseTest;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,7 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
     }
 
     @Test
+    @Description("Тесты отображения для вкладок конструктора раздела соответствующим заголовком")
     public void sectionTransitionTest() {
 
         Allure.getLifecycle().updateTestCase(t -> t.setName(name));
