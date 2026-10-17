@@ -65,7 +65,6 @@ public class LoginPage extends HeaderPage {
     public HeaderPage loginAs(String email, String password) {
         return setEmail(email)
                 .setPassword(password)
-                .clickLoginButton()
-                .waitForUserInHeader();
+                .clickLoginButton();
     }
 }

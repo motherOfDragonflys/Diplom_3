@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
@@ -12,6 +13,7 @@ import pageobjects.ConstructorPage;
 import pageobjects.HeaderPage;
 import pageobjects.LoginPage;
 
+import static org.junit.Assert.assertEquals;
 import static utils.Config.baseUrl;
 import static utils.TestData.*;
 
@@ -69,6 +71,11 @@ public class LoginTest extends BaseTest {
                 .clickOrderButton()
                 .waitForLoginForm()
                 .loginAs(email, password);
+
+        assertEquals(
+                "После входа по кнопке \"Оформить заказ\", в шапке не имя пользователя",
+                userName(),
+                new HeaderPage(driver).getHeaderUserName());
     }
 
     @Test
@@ -79,6 +86,11 @@ public class LoginTest extends BaseTest {
                 .clickAccountLink()
                 .waitForLoginForm()
                 .loginAs(email, password);
+
+        assertEquals(
+                "После входа по кнопке \"Личный кабинет\", в шапке не имя пользователя",
+                userName(),
+                new HeaderPage(driver).getHeaderUserName());
     }
 
     @Test
@@ -92,6 +104,11 @@ public class LoginTest extends BaseTest {
                 .clickLoginLink()
                 .waitForLoginForm()
                 .loginAs(email, password);
+
+        assertEquals(
+                "После входа по кнопке \"Войти\" под формой регистрации, в шапке не имя пользователя",
+                userName(),
+                new HeaderPage(driver).getHeaderUserName());
     }
 
     @Test
@@ -105,5 +122,10 @@ public class LoginTest extends BaseTest {
                 .clickLoginLink()
                 .waitForLoginForm()
                 .loginAs(email, password);
+
+        assertEquals(
+                "После входа по кнопке \"Войти\" под формой восстановления пароля, в шапке не имя пользователя",
+                userName(),
+                new HeaderPage(driver).getHeaderUserName());
     }
 }

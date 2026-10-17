@@ -29,6 +29,11 @@ public class HeaderPage extends BasePage {
          return this;
     }
 
+    @Step("Получаем имя пользователя в шапке")
+    public String getHeaderUserName() {
+        return waitForVisible(HEADER_USER_NAME).getText();
+    }
+
     @Step("Выходим из аккаунта")
     public HeaderPage logout() {
         clickAccountLink();
