@@ -17,6 +17,8 @@ target/
 .mvn
 .mvn/
 
+/src/main/resources
+
 ### Eclipse ###
 .apt_generated
 .classpath

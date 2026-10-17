@@ -34,15 +34,4 @@ public class HeaderPage extends BasePage {
         return waitForVisible(HEADER_USER_NAME).getText();
     }
 
-    @Step("Выходим из аккаунта")
-    public HeaderPage logout() {
-        clickAccountLink();
-
-        ProfilePage profilePage = new ProfilePage(driver);
-        profilePage.waitForProfileForm();
-        profilePage.clickLogoutButton()
-                .waitForLoggedOut();
-
-        return this;
-    }
 }
