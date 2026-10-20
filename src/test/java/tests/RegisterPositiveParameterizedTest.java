@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import pageobjects.LoginPage;
 import pageobjects.RegisterPage;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,14 +59,15 @@ public class RegisterPositiveParameterizedTest extends BaseApiTest {
 
         user = new User(email, password, name);
 
-        registerPage.setName(name);
-        registerPage.setEmail(email);
-        registerPage.setPassword(password);
-        registerPage.clickRegisterButton();
-
-        new LoginPage(driver).waitForLoginForm();
+        registerPage.setName(name)
+                .setEmail(email)
+                .setPassword(password)
+                .clickRegisterButton()
+                .waitForLoginForm();
 
         Response loginResponse = loginAPI(email, password, name);
+        accessToken = loginResponse.path("accessToken");
+
         Assert.assertEquals(
               testName + ": пользователь создан, API-логин с зарегистрированными данными",
               HttpStatus.SC_OK,

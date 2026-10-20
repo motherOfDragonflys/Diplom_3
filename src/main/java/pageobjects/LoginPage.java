@@ -3,40 +3,36 @@ package pageobjects;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.Config;
-import java.time.Duration;
 
+/**
+ * Page Object страницы Вход.
+ * <p>
+ * Локаторы полей и кнопки формы входа, переходы на регистрацию
+ * и восстановление пароля, сценарий авторизации.
+ */
 public class LoginPage extends HeaderPage {
+
+    // UI-путь для страницы входа
+    public static final String LOGIN_UI_PATH = "/login";
 
 //__ЛОКАТОРЫ____________________________________________________________________________________________________________
 
-    //__Заголовок формы "Вход": маркер, что открыта именно эта страница
-    public static final By LOGIN_HEADER =
-            By.xpath(".//h3[text()='Вход']");
+    //__Заголовок формы Вход: маркер, что открыта именно эта страница
+    public static final By LOGIN_FORM =
+            By.xpath(".//h2[text()='Вход']");
 
     //__Форма входа:
     // Поле ввода email
     public static final By EMAIL_FIELD =
-            By.xpath(".//input[@type='email']");
+            By.xpath(".//label[text()='Email']/following-sibling::input");
 
     // Поле ввода пароля
     public static final By PASSWORD_FIELD =
             By.xpath(".//input[@type='password']");
 
-    // Кнопка "Войти"
+    // Кнопка Войти
     public static final By LOGIN_BUTTON =
             By.xpath(".//button[text()='Войти']");
-
-    //__Под формой:
-    // Ссылка "Зарегистрироваться": ведет на регистрацию
-    public static final By REGISTER_LINK =
-            By.xpath(".//a[@href='/register']");
-
-    // Ссылка "Восстановить пароль": ведет на страницу восстановления пароля
-    public static final By FORGOT_PASSWORD_LINK =
-            By.xpath(".//a[@href='/forgot-password']");
 
 //__МЕТОДЫ______________________________________________________________________________________________________________
 
@@ -44,19 +40,10 @@ public class LoginPage extends HeaderPage {
         super(driver);
     }
 
-    @Step("Открываем форму входа через \"Личный кабинет\"")
-    public LoginPage openLoginPage() {
-        driver.get(Config.baseUrl());
-        //Приходим на форму Вход
-        waitForClickable(HEADER_ACCOUNT_LINK).click();
-        return waitForLoginForm();
-    }
-
     @Step("Проверяем, что открыта форма входа")
     public LoginPage waitForLoginForm() {
-        new WebDriverWait(driver, Duration.ofSeconds(15))
-                .until(ExpectedConditions.urlContains("/login"));
-        waitForVisible(LOGIN_HEADER);
+        waitForUrlContains(LOGIN_UI_PATH);
+        waitForVisible(LOGIN_FORM);
         return this;
     }
 
@@ -73,25 +60,13 @@ public class LoginPage extends HeaderPage {
     }
 
     @Step("Нажимаем кнопку \"Войти\"")
-    public HeaderPage clickLoginButton() {
+    public ConstructorPage clickLoginButton() {
         clickElementWithWaiting(LOGIN_BUTTON);
-        return new HeaderPage(driver);
-    }
-
-    @Step("Нажимаем на ссылку \"Зарегистрироваться\" под формой входа")
-    public RegisterPage clickRegisterLink() {
-        clickElementWithWaiting(REGISTER_LINK);
-        return new RegisterPage(driver);
-    }
-
-    @Step("Нажимаем на ссылку \"Восстановить пароль\" под формой входа")
-    public ForgotPasswordPage clickForgotPasswordLink() {
-        clickElementWithWaiting(FORGOT_PASSWORD_LINK);
-        return new ForgotPasswordPage(driver);
+        return new ConstructorPage(driver);
     }
 
     @Step("Заполняем форму входа и нажимаем \"Войти\"")
-    public HeaderPage loginAs(String email, String password) {
+    public ConstructorPage loginAs(String email, String password) {
         return setEmail(email)
                 .setPassword(password)
                 .clickLoginButton();

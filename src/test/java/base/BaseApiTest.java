@@ -10,8 +10,7 @@ import org.junit.Before;
 import utils.Config;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.assertEquals;
-import static pageobjects.LoginPage.LOGIN_ENDPOINT;
-import static pageobjects.RegisterPage.REGISTER_ENDPOINT;
+import static utils.ApiEndpoints.*;
 import static utils.Config.pageUrl;
 import static utils.TestData.*;
 
@@ -70,7 +69,7 @@ public class BaseApiTest extends BaseTest {
             RestAssured.given()
                     .header("Authorization", token)
                     .when()
-                    .delete(Config.baseUrl() + "/api/auth/user");
+                    .delete(Config.baseUrl() + DELETE_ENDPOINT);
         }
     }
 

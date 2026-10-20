@@ -4,7 +4,8 @@ import base.BaseTest;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
-import org.junit.Before;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -13,63 +14,55 @@ import pageobjects.ConstructorPage;
 import static pageobjects.ConstructorPage.*;
 import static org.junit.Assert.assertTrue;
 
-@Feature("Раздел «Конструктор»")
+@Feature("Раздел Конструктор")
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @RunWith(Parameterized.class)
 public class ConstructorSectionParameterizedTest extends BaseTest {
 
-    //Название вкладки, вкладка старта, её маркер активности, проверяемая вкладка, её маркер активности
-    private final String name;
+    // Имя стартовой вкладки, имя проверяемой вкладки
+    private final String startName;
+    private final String targetName;
+    // Вкладка старта, ее маркер активности
     private final By tabToPrepare;
     private final By prepareTabActive;
+    // Проверяемая вкладка, ее маркер активности
     private final By tabToClick;
     private final By tabToAssert;
 
-    public ConstructorSectionParameterizedTest(String name, By tabToPrepare, By prepareTabActive,
-                                               By tabToClick, By tabToAssert) {
-        this.name = name;
-        this.tabToPrepare = tabToPrepare;
-        this.prepareTabActive = prepareTabActive;
-        this.tabToClick = tabToClick;
-        this.tabToAssert = tabToAssert;
-    }
-
-    @Parameterized.Parameters(name = "{0}")
+    @Parameterized.Parameters(name = "{1}")
     public static Object[][] sections() {
         return new Object[][]{
                 // Соусы: стартуем с Булок, кликаем Соусы, ждём SAUCES_TAB_ACTIVE
-                {"Отображение соусов для вкладки Соусы",
+                {"Булки", "Соусы",
                         BUNS_TAB,     BUNS_TAB_ACTIVE,
                         SAUCES_TAB,   SAUCES_TAB_ACTIVE},
                 // Начинки: стартуем с Булок, кликаем Начинки, ждём FILLINGS_TAB_ACTIVE
-                {"Отображение начинок для вкладки Начинки",
+                {"Булки", "Начинки",
                         BUNS_TAB,     BUNS_TAB_ACTIVE,
                         FILLINGS_TAB, FILLINGS_TAB_ACTIVE},
                 // Булки: стартуем с Соусов, кликаем Булки, ждём BUNS_TAB_ACTIVE
-                {"Отображение булок для вкладки Булки",
+                {"Соусы", "Булки",
                         SAUCES_TAB,   SAUCES_TAB_ACTIVE,
                         BUNS_TAB,     BUNS_TAB_ACTIVE},
         };
     }
 
-    @Before
-
-
     @Test
-    @Description("Тесты отображения для вкладок конструктора раздела соответствующим заголовком")
+    @Description("Проверка перехода по вкладкам конструктора и отображения соответствующей секции: \n" +
+            "Сначала переходим на другую вкладку, затем кликаем проверяемую, которая точно не выбрана")
     public void sectionTransitionTest() {
 
-        Allure.getLifecycle().updateTestCase(t -> t.setName(name));
+        Allure.getLifecycle().updateTestCase(t ->
+                t.setName("Отображение ингредиентов для вкладки " + targetName));
 
         ConstructorPage page = new ConstructorPage(driver);
 
-        // Открыли раздел с конструктором
         page.openConstructor();
-        // Сначала уходим на другую вкладку (для булок - не булки), чтобы проверяемый переход был настоящим
-        page.clickTab(tabToPrepare, prepareTabActive);
-        // Переходим к проверяемому разделу
-        page.clickTab(tabToClick, tabToAssert);
+        page.clickTab(startName, tabToPrepare, prepareTabActive);
+        // Переходим к проверяемому разделу: клик по вкладке, проверка активного раздела в констукторе
+        page.clickTab(targetName, tabToClick, tabToAssert);
 
-        assertTrue("Активной является вкладка \"" + name + "\"",
-                page.isTabActive(tabToAssert));
+        assertTrue("Вкладка " + targetName + " не активна, секция не отображается",
+                page.isTabActive(targetName, tabToAssert));
     }
 }

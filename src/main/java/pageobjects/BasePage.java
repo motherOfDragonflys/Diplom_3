@@ -24,7 +24,7 @@ public abstract class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
     }
 
-//__Ожидания видимости, кликабельности, невидимости_____________________________________________________________________
+//__Ожидания видимости, кликабельности, URL_____________________________________________________________________________
 
     protected WebElement waitForVisible(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -32,6 +32,10 @@ public abstract class BasePage {
 
     protected WebElement waitForClickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    protected void waitForUrlContains(String path) {
+        wait.until(ExpectedConditions.urlContains(path));
     }
 
 //__Общие операции______________________________________________________________________________________________________
@@ -45,5 +49,6 @@ public abstract class BasePage {
         WebElement field = waitForVisible(locator);
         field.clear();
         field.sendKeys(text);
+        driver.switchTo().activeElement().sendKeys(Keys.TAB);
     }
 }

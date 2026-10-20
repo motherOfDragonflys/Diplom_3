@@ -4,7 +4,6 @@ import base.BaseApiTest;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +37,7 @@ public class RegisterNegativeParameterizedTest extends BaseApiTest {
         });
     }
 
+    // "Отключаем" создание пользователя у родителя
     @Override
     @Before
     public void createUser() {
@@ -47,16 +47,15 @@ public class RegisterNegativeParameterizedTest extends BaseApiTest {
     }
 
     @Test
-    @Issue("BUG-3 Не появляется ошибка на пустое поле ввода пароля")
     @Description("Невозможность регистрации пользователя с паролем от 0 до 5 символов включительно")
     public void registerWithInvalidPassword() {
 
         Allure.getLifecycle().updateTestCase(t -> t.setName(testName));
 
-        registerPage.setName(userName());
-        registerPage.setEmail(uniqueEmail());
-        registerPage.setPassword(password);
-        registerPage.clickRegisterButton();
+        registerPage.setName(userName())
+                .setEmail(uniqueEmail())
+                .setPassword(password)
+                .clickRegisterButton();
 
         Assert.assertTrue(
                 testName + ": ожидаемое сообщение об ошибке не появилось",
