@@ -32,7 +32,7 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
         this.tabToAssert = tabToAssert;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "{0}")
     public static Object[][] sections() {
         return new Object[][]{
                 // Соусы: стартуем с Булок, кликаем Соусы, ждём SAUCES_TAB_ACTIVE

@@ -12,13 +12,8 @@ package utils;
 public final class Config {
 
     private static final String BASE_URL_DEFAULT =
-            //Зеркало:
-            "https://dimabagz.github.io/stellar-burgers/";
-
-            /* Оригинал: "https://stellarburgers.nomoreparties.site"
-            Стартовая страница зеркала открывается ручным переходом на вкладку Конструктор.
-            Тесты адаптированы под зеркало.
-             */
+            "https://qa-stellarburgers.education-services.ru";
+            // Оригинал из тренажера: "https://stellarburgers.nomoreparties.site"
 
     private Config() {
     }
