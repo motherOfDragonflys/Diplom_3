@@ -21,4 +21,9 @@ public final class Config {
     public static String baseUrl() {
         return System.getProperty("base.url", BASE_URL_DEFAULT);
     }
+
+    // Полный адрес страницы: базовый URL + эндпоинт
+    public static String pageUrl(String endpoint) {
+        return baseUrl() + endpoint;
+    }
 }

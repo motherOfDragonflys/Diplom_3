@@ -4,6 +4,7 @@ import base.BaseTest;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -49,6 +50,9 @@ public class ConstructorSectionParameterizedTest extends BaseTest {
                         BUNS_TAB,     BUNS_TAB_ACTIVE},
         };
     }
+
+    @Before
+
 
     @Test
     @Description("Тесты отображения для вкладок конструктора раздела соответствующим заголовком")
